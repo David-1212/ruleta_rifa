@@ -4,7 +4,17 @@
     </x-slot>
 
     <div class="py-6 max-w-7xl mx-auto">
+        <form method="POST"
+            action="{{ route('premios.borrarTodo') }}"
+            onsubmit="return confirm('¿Seguro que deseas borrar TODOS los premios?')"
+            class="mb-4 inline-block">
+            @csrf
+            @method('DELETE')
 
+            <button class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
+                🗑️ Borrar todos los premios
+            </button>
+        </form>
         {{-- IMPORTAR CSV --}}
         <form method="POST"
               action="{{ route('participantes.importar') }}"

@@ -48,4 +48,12 @@ class PremioController extends Controller
 
         return back()->with('success', 'Premios importados correctamente');
     }
+    public function borrarTodo()
+    {
+        Premio::truncate(); // elimina TODOS los registros
+
+        return redirect()
+            ->route('premios.index')
+            ->with('success', 'Todos los premios fueron eliminados');
+    }
 }

@@ -10,11 +10,37 @@ class RifaController extends Controller
 {
     public function index()
     {
+        // Participantes
+        $totalParticipantes = Participante::count();
+
+        // Premios
+        $totalPremios = Premio::count();
+        $premiosEntregados = Premio::where('entregado', true)->count();
+        $premiosFaltantes = Premio::where('entregado', false)->count();
+
         return view('rifa.index', [
+            // 🎰 Ruleta (NO tocar)
             'nombres' => Participante::where('ganador', false)->pluck('nombre'),
-            'premios' => Premio::where('entregado', false)->pluck('nombre')
+            'premios' => Premio::where('entregado', false)->pluck('nombre'),
+
+            // 📊 Estadísticas
+            'totalParticipantes' => $totalParticipantes,
+            'totalPremios' => $totalPremios,
+            'premiosEntregados' => $premiosEntregados,
+            'premiosFaltantes' => $premiosFaltantes,
         ]);
     }
+
+    public function estadisticas()
+    {
+        return response()->json([
+            'totalParticipantes' => Participante::count(),
+            'totalPremios'       => Premio::count(),
+            'premiosEntregados'  => Premio::where('entregado', true)->count(),
+            'premiosFaltantes'   => Premio::where('entregado', false)->count(),
+        ]);
+    }
+    
 
     // 🎰 Girar nombre (NO se marca ganador aún)
     public function girarNombre()
@@ -57,6 +83,7 @@ class RifaController extends Controller
         $participante = Participante::find($request->participante_id);
         if ($participante) {
             $participante->ganador = true;
+            $participante->premio_id = $premio->id;
             $participante->save();
         }
 

@@ -8,11 +8,17 @@ class Participante extends Model
 {
     protected $fillable = [
         'nombre',
-        'ganador'
+        'ganador',
+        'premio_id',
     ];
-    
+
     protected $casts = [
         'ganador' => 'boolean',
     ];
+
+    public function premio()
+    {
+        return $this->belongsTo(Premio::class);
+    }
 }
 

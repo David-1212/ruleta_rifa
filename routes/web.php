@@ -38,38 +38,47 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     /*
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     | ADMIN & SUPER ADMIN
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     */
     Route::middleware('role:admin,super_admin')->group(function () {
+
+        // 🎰 Rifa
         Route::get('/rifa', [RifaController::class, 'index'])->name('rifa.index');
         Route::post('/rifa/nombre', [RifaController::class, 'girarNombre'])->name('rifa.girarNombre');
         Route::post('/rifa/premio', [RifaController::class, 'girarPremio'])->name('rifa.girarPremio');
 
+        // 🎁 Premios
         Route::get('/premios', [PremioController::class, 'index'])->name('premios.index');
         Route::post('/premios/importar', [PremioController::class, 'importar'])->name('premios.importar');
+        Route::delete('/premios/borrar-todo', [PremioController::class, 'borrarTodo'])
+            ->name('premios.borrarTodo');
 
+        // 👥 Participantes
         Route::get('/participantes', [ParticipanteController::class, 'index'])
             ->name('participantes.index');
-
         Route::post('/participantes/importar', [ParticipanteController::class, 'importar'])
             ->name('participantes.importar');
+        Route::delete('/participantes/borrar-todo', [ParticipanteController::class, 'borrarTodo'])
+            ->name('participantes.borrarTodo');
+            Route::get('/rifa/estadisticas', [RifaController::class, 'estadisticas'])
+    ->name('rifa.estadisticas');
+
     });
 
     /*
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     | PARTICIPANTES – BUSCAR (AJAX)
-    |--------------------------------------------------------------------------
-    | ⚠️ SOLO auth, SIN role
+    |----------------------------------------------------------------------
     */
     Route::get('/participantes/buscar', [ParticipanteController::class, 'buscar'])
         ->name('participantes.buscar');
 
     /*
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     | SUPER ADMIN
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------
     */
     Route::middleware('role:super_admin')->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])

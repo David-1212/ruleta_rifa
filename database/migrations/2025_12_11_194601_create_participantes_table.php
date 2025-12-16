@@ -14,9 +14,16 @@ return new class extends Migration
         Schema::create('participantes', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->timestamps();
             $table->boolean('ganador')->default(false);
+        
+            $table->foreignId('premio_id')
+                  ->nullable()
+                  ->constrained('premios')
+                  ->nullOnDelete();
+        
+            $table->timestamps();
         });
+        
     }
 
     /**

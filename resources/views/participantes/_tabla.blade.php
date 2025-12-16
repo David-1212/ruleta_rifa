@@ -3,6 +3,7 @@
         <tr class="bg-gray-200 text-left">
             <th class="p-3">Nombre</th>
             <th class="p-3">Estado</th>
+            <th class="px-4 py-2">Premio</th>
         </tr>
     </thead>
     <tbody>
@@ -12,6 +13,14 @@
                 <td class="p-3 text-center text-xl">
                     {{ $p->ganador ? '🎉' : '—' }}
                 </td>
+                <td class="px-4 py-2">
+                    {{ $p->premio_id 
+                        ? ($premios[$p->premio_id] ?? '—') 
+                        : '—' 
+                    }}
+
+                </td>
+
             </tr>
         @empty
             <tr>

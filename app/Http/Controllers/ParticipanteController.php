@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Participante;
+use App\Models\Premio;
+
 
 class ParticipanteController extends Controller
 {
     public function index(Request $request)
     {
         $query = Participante::query();
-    
+
+        $premios = Premio::pluck('nombre', 'id');
         if ($request->estado === 'ganador') {
             $query->where('ganador', true);
         }
@@ -24,7 +27,7 @@ class ParticipanteController extends Controller
             ->paginate(20)
             ->withQueryString(); // mantiene filtros en la paginación
     
-        return view('participantes.index', compact('participantes'));
+        return view('participantes.index', compact('participantes','premios'));
     }
 
     public function importar(Request $request)
@@ -50,20 +53,29 @@ class ParticipanteController extends Controller
     }
 
     public function buscar(Request $request)
-{
-    $query = Participante::query();
+    {
+        $query = Participante::query();
 
-    if ($request->filled('buscar')) {
-        $query->where('nombre', 'like', '%' . $request->buscar . '%');
+        if ($request->filled('buscar')) {
+            $query->where('nombre', 'like', '%' . $request->buscar . '%');
+        }
+        
+    $premios = Premio::pluck('nombre', 'id');
+        $participantes = $query
+            ->orderBy('nombre')
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('participantes._tabla', compact('participantes','premio'));
     }
+    public function borrarTodo()
+    {
+        Participante::truncate(); // elimina TODOS los registros
 
-    $participantes = $query
-        ->orderBy('nombre')
-        ->paginate(20)
-        ->withQueryString();
-
-    return view('participantes._tabla', compact('participantes'));
-}
+        return redirect()
+            ->route('participantes.index')
+            ->with('success', 'Todos los participantes fueron eliminados');
+    }
 
 
 }
