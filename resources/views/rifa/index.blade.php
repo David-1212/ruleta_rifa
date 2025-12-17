@@ -177,7 +177,7 @@ body.navbar-hidden { overflow:hidden; }
 </div>
 
 <!-- 🏆 ÚLTIMOS GANADORES -->
-<div class="mt-8 max-w-3xl mx-auto">
+<div class="fixed bottom-6 left-6 w-80 z-40">
     <div class="bg-black/80 rounded-2xl shadow-lg p-6 text-white">
         <h3 class="text-xl font-bold mb-4 text-center text-green-400">
             🏆 Últimos Ganadores
@@ -556,8 +556,8 @@ function actualizarUltimos() {
 // Actualiza las estadísticas cada 5 segundos (5000 milisegundos)
 setInterval(() => {
     actualizarEstadisticas();
+    actualizarUltimos(); // 👈 NUEVO
 }, 5000);
-
 
 
 
