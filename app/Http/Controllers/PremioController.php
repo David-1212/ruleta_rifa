@@ -52,13 +52,22 @@ class PremioController extends Controller
     }
     public function borrarTodo()
     {
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        Participante::truncate();
-        \DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        DB::transaction(function () {
+
+            // 1️⃣ Quitar relación premio → participante
+            Participante::query()->update([
+                'premio_id' => null,
+                'ganador' => false
+            ]);
+
+            // 2️⃣ Borrar premios correctamente
+            Premio::query()->delete();
+        });
 
         return redirect()
-            ->route('participantes.index')
-            ->with('success', 'Todos los participantes fueron eliminados');
+            ->route('premios.index')
+            ->with('success', 'Todos los premios fueron eliminados correctamente');
     }
+
 
 }

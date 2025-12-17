@@ -15,7 +15,7 @@
 
                 {{-- BORRAR PREMIOS --}}
                 <form method="POST"
-                      action="{{ route('premios.borrarTodo') }}"
+                      action="{{ route('participantes.borrarTodo') }}"
                       onsubmit="return confirm('¿Seguro que deseas borrar TODOS los premios?')"
                       class="mb-4 inline-block">
                     @csrf
