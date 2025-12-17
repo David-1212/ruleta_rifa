@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Premio;
+use App\Models\Participante;
+use Illuminate\Support\Facades\DB;
 
 class PremioController extends Controller
 {
@@ -50,10 +52,13 @@ class PremioController extends Controller
     }
     public function borrarTodo()
     {
-        Premio::truncate(); // elimina TODOS los registros
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        Participante::truncate();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         return redirect()
-            ->route('premios.index')
-            ->with('success', 'Todos los premios fueron eliminados');
+            ->route('participantes.index')
+            ->with('success', 'Todos los participantes fueron eliminados');
     }
+
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Participante;
 use App\Models\Premio;
+use Illuminate\Support\Facades\DB;
 
 
 class ParticipanteController extends Controller
@@ -74,12 +75,23 @@ class ParticipanteController extends Controller
     
     public function borrarTodo()
     {
-        Participante::truncate(); // elimina TODOS los registros
+        \DB::transaction(function () {
+
+            // 1️⃣ Quitar relación premio → participante
+            Participante::query()->update([
+                'premio_id' => null,
+                'ganador' => false
+            ]);
+
+            // 2️⃣ Borrar premios correctamente
+            Premio::query()->delete();
+        });
 
         return redirect()
-            ->route('participantes.index')
-            ->with('success', 'Todos los participantes fueron eliminados');
+            ->route('premios.index')
+            ->with('success', 'Todos los premios fueron eliminados');
     }
+
     public function obtenerEstadisticas()
     {
         return response()->json([
