@@ -1,6 +1,6 @@
 <x-app-layout>
 <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="font-semibold text-xl text-white leading-tight">
         🎰 Ruleta Navideña
     </h2>
 </x-slot>
@@ -171,7 +171,7 @@ body.navbar-hidden { overflow:hidden; }
 <div class="flex justify-center">
     <button
         id="btnNoAsistio"
-        class="mt-6 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl shadow-lg hidden">
+        class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow-lg hidden">
         ❌ No asistió / Reiniciar
     </button>
 </div>
